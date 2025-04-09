@@ -6,9 +6,7 @@ import au.com.telstra.simcardactivator.dto.ActuatorRequest;
 import au.com.telstra.simcardactivator.model.SimActivationLog;
 import au.com.telstra.simcardactivator.repository.SimActivationLogRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
@@ -38,5 +36,14 @@ public class SimCardController {
 
         // Return response
         return ResponseEntity.ok(activationSuccess);
+    }
+
+    @GetMapping("/logs")
+    public ResponseEntity<SimActivationLog> getLog(@RequestParam Long id) {
+        SimActivationLog log = logRepository.findById(id).orElse(null);
+        if (log == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(log);
     }
 }
