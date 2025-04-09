@@ -1,6 +1,6 @@
 package au.com.telstra.simcardactivator.controller;
 
-import au.com.telstra.simcardactivator.SimActivationRequest;
+import au.com.telstra.simcardactivator.dto.SimActivationRequest;
 import au.com.telstra.simcardactivator.dto.ActuatorRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +20,7 @@ public class SimCardController {
     @PostMapping("/activate")
     public ResponseEntity<String> activateSim(@RequestBody SimActivationRequest request) {
         // Prepare the payload for the actuator service
-        ActuatorRequest actuatorRequest = new ActuatorRequest(request.getIccid());
+        ActuatorRequest actuatorRequest = new ActuatorRequest(request.iccid());
 
         // Send the POST request to the actuator microservice
         String actuatorUrl = "http://localhost:8444/actuate";
