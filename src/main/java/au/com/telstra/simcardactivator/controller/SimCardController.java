@@ -28,7 +28,10 @@ public class SimCardController {
         ResponseEntity<ActuatorResponse> response = restTemplate.postForEntity(
                 actuatorUrl, actuatorRequest, ActuatorResponse.class);
 
-        boolean activationSuccess = response.getBody() != null && response.getBody().isSuccess();
+        if (response.getBody() == null) {
+            return ResponseEntity.status(500).body(false);
+        }
+        boolean activationSuccess = response.getBody().isSuccess();
 
         // Save log to database
         SimActivationLog log = new SimActivationLog(request.getIccid(), request.getCustomerEmail(), activationSuccess);
