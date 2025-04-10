@@ -23,7 +23,7 @@ public class SimCardController {
     @PostMapping("/activate")
     public ResponseEntity<Boolean> activateSim(@RequestBody SimActivationRequest request) {
         // Build actuator request
-        ActuatorRequest actuatorRequest = new ActuatorRequest(request.iccid());
+        ActuatorRequest actuatorRequest = new ActuatorRequest(request.getIccid());
         String actuatorUrl = "http://localhost:8444/actuate";
         ResponseEntity<ActuatorResponse> response = restTemplate.postForEntity(
                 actuatorUrl, actuatorRequest, ActuatorResponse.class);
@@ -31,7 +31,7 @@ public class SimCardController {
         boolean activationSuccess = response.getBody() != null && response.getBody().isSuccess();
 
         // Save log to database
-        SimActivationLog log = new SimActivationLog(request.iccid(), request.customerEmail(), activationSuccess);
+        SimActivationLog log = new SimActivationLog(request.getIccid(), request.getCustomerEmail(), activationSuccess);
         logRepository.save(log);
 
         // Return response
